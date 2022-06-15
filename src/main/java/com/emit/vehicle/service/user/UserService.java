@@ -7,6 +7,8 @@ public interface UserService {
 	
 	User validateUser(User user);
 	
+	User validateUsername(String username);
+	
 	User saveNewUser(User user);
 	
 	User updateUser(User user);

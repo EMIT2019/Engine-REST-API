@@ -45,4 +45,9 @@ public class UserServiceImpl implements UserService  {
 		return uRepository.validateUser(user.getUsername(), user.getPassword());
 	}
 
+	@Override
+	public User validateUsername(String username) {
+		return uRepository.validateUsername(username);
+	}
+
 }

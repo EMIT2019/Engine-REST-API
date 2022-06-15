@@ -10,4 +10,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query(value = "SELECT * FROM db_vehicles.user WHERE username = :user_name AND password = :pass_word", nativeQuery = true)
 	User validateUser(@Param("user_name") String username, @Param("pass_word") String password);
+	
+	@Query(value = "SELECT * FROM db_vehicles.user WHERE username = :user_name", nativeQuery = true)
+	User validateUsername(@Param("user_name") String username);
 }

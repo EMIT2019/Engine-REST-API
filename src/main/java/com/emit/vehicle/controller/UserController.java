@@ -25,7 +25,11 @@ public class UserController {
 	
 	@PostMapping("/new_user")
 	public User saveUser(@RequestBody User user) {
-		return uService.saveNewUser(user);
+		if(uService.validateUsername(user.getUsername()) != null) {
+			throw new RuntimeException("The username you typed is already in use");
+		}else {			
+			return uService.saveNewUser(user);
+		}
 	}
 	
 	@PostMapping("/check_user")
