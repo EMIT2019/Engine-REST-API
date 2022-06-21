@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.persistence.Id;
 
 import lombok.Getter;
@@ -21,16 +25,27 @@ public class Vehicle {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_vehicle")
 	private Long idVehicle;
-	@Column(name = "id_brand")
+
+	@NotNull(message = "The field brand needs to be specified")
+	@Column(name = "id_brand")  
 	private Long idBrand; 
-	@Column(name = "id_type")
+
+	@NotNull(message = "The field type needs to be specified")
+	@Column(name = "id_type") 
 	private Long idType; 
-	@Column(name = "horsepower")
+	
+	@Min(value = 1, message = "The field horsepower must be higher than 0")
+	@Column(name = "horsepower") 
 	private Long horsepower; 
-	@Column(name = "top_speed")
+	
+	@Min(value = 1, message = "The field top_speed must be higher than 0")
+	@Column(name = "top_speed") 
 	private Long top_speed; 
+	
 	@Column(name = "img")
 	private String img;
-	@Column(name = "model")
+	
+	@NotBlank(message = "The field model needs more content on it")
+	@Column(name = "model") 
 	private String model; 
 }

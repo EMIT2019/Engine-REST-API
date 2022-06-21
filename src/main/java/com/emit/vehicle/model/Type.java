@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.*;
 
@@ -19,6 +20,8 @@ public class Type {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_type")
 	private Long id_type; 
+	
+	@NotEmpty(message = "The field type must not be empty")
 	@Column(name = "type")
 	private String type; 
 }

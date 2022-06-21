@@ -42,12 +42,12 @@ public class UserServiceImpl implements UserService  {
 
 	@Override
 	public User validateUser(User user) {
-		return uRepository.validateUser(user.getUsername(), user.getPassword());
+		return uRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 	}
 
 	@Override
 	public User validateUsername(String username) {
-		return uRepository.validateUsername(username);
+		return uRepository.findByUsername(username);
 	}
 
 }
