@@ -29,6 +29,11 @@ public class TypeController {
 		return new ResponseEntity<List<Type>>(tService.getAllTypes(), HttpStatus.OK);
 	}
 	
+	@GetMapping("type-page")
+	public ResponseEntity<List<Type>> getPageType(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize){
+		return new ResponseEntity<List<Type>>(tService.getPageType(pageNumber, pageSize), HttpStatus.OK);
+	}
+	
 	@GetMapping("/get-type")
 	public ResponseEntity<Type> getTypeById(@RequestParam("idType") Long id) {
 		return new ResponseEntity<Type>(tService.getTypeById(id), HttpStatus.OK);

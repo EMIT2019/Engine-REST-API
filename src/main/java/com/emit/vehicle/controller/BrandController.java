@@ -29,6 +29,11 @@ public class BrandController {
 		return new ResponseEntity<List<Brand>>(bService.getAllBrands(), HttpStatus.OK);
 	}
 	
+	@GetMapping("/brand-page")
+	public ResponseEntity<List<Brand>> getBrandPage(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize){
+		return new ResponseEntity<List<Brand>>(bService.getBrandPage(pageNumber, pageSize), HttpStatus.OK);
+	}
+	
 	@GetMapping("/get-brand")
 	public ResponseEntity<Brand> getBrandById(@RequestParam("idBrand") Long id){
 		return new ResponseEntity<Brand>(bService.getBrandById(id), HttpStatus.OK);

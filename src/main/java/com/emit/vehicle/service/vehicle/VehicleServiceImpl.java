@@ -3,6 +3,8 @@ package com.emit.vehicle.service.vehicle;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.Vehicle;
@@ -17,6 +19,13 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public List<Vehicle> getVehicles() {
 		return vRepository.findAll();
+	}
+	
+	//Getting a range of records (JPA Pagination)
+	@Override
+	public List<Vehicle> getPageVehicles(int pageNumber, int pageSize) {
+		Pageable page = PageRequest.of(pageNumber, pageSize);
+		return vRepository.findAll(page).getContent();
 	}
 	
 	@Override

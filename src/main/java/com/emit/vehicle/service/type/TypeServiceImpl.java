@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.Type;
@@ -18,6 +20,13 @@ public class TypeServiceImpl implements TypeService {
 	@Override
 	public List<Type> getAllTypes() {
 		return tRepository.findAll();
+	}
+	
+	//Getting a range of records (JPA Pagination)
+	@Override
+	public List<Type> getPageType(int pageNumber, int pageSize){
+		Pageable page = PageRequest.of(pageNumber, pageSize);
+		return tRepository.findAll(page).getContent();
 	}
 
 	@Override

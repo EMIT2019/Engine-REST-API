@@ -3,6 +3,8 @@ package com.emit.vehicle.service.brand;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.Brand;
@@ -17,6 +19,13 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public List<Brand> getAllBrands() {
 		return bRepository.findAll();
+	}
+	
+	//Getting a range of records (JPA Pagination)
+	@Override
+	public List<Brand> getBrandPage(int pageNumber, int pageSize) {
+		Pageable page = PageRequest.of(pageNumber, pageSize);
+		return bRepository.findAll(page).getContent();
 	}
 
 	@Override
@@ -43,5 +52,4 @@ public class BrandServiceImpl implements BrandService {
 	public Brand updateBrand(Brand brand) {
 		return bRepository.save(brand);
 	}
-
 }

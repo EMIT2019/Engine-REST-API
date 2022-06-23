@@ -7,5 +7,6 @@ import com.emit.vehicle.model.Vehicle;
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
-	
+	/*@Query("SELECT * FROM db_vehicles.vw_vehicles")
+	public List<Vehicles>*/
 }

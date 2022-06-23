@@ -31,6 +31,11 @@ public class VehicleController {
 		return new ResponseEntity<List<Vehicle>>(vService.getVehicles(), HttpStatus.OK);
 	}
 	
+	@GetMapping("/vehicle-page")
+	public ResponseEntity<List<Vehicle>> getPageVehicle(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize){
+		return new ResponseEntity<List<Vehicle>>(vService.getPageVehicles(pageNumber, pageSize), HttpStatus.OK);
+	}
+	
 	@GetMapping("/get-vehicle")
 	public ResponseEntity<Vehicle> getVehicleById(@RequestParam("idVehicle") Long id) {
 		return new ResponseEntity<Vehicle>(vService.getVehicleById(id), HttpStatus.OK);
