@@ -3,18 +3,24 @@ package com.emit.vehicle.service.vehicle;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.Vehicle;
+import com.emit.vehicle.model.VehicleView;
 import com.emit.vehicle.repository.VehicleRepository;
+import com.emit.vehicle.repository.VehicleViewRepository;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
 	
 	@Autowired
 	private VehicleRepository vRepository; 
+	
+	@Autowired
+	private VehicleViewRepository vRepositoryView;
 	
 	@Override
 	public List<Vehicle> getVehicles() {
@@ -23,20 +29,14 @@ public class VehicleServiceImpl implements VehicleService {
 	
 	//Getting a range of records (JPA Pagination)
 	@Override
-	public List<Vehicle> getPageVehicles(int pageNumber, int pageSize) {
+	public List<VehicleView> getPageVehicles(int pageNumber, int pageSize) {
 		Pageable page = PageRequest.of(pageNumber, pageSize);
-		return vRepository.findAll(page).getContent();
+		return vRepositoryView.getAllVehiclesView(page);
 	}
 	
 	@Override
-	public Vehicle getVehicleById(Long id) {
-		Optional<Vehicle> vehicle = vRepository.findById(id);
-		
-		if(vehicle.isPresent()) {
-			return vehicle.get();
-		};
-		
-		throw new RuntimeException("Vehicle with id "+id+" wasn't found.");
+	public VehicleView getVehicleById(Long id) {
+		return vRepositoryView.findVehicleById(id);
 	}
 
 	@Override

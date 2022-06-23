@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emit.vehicle.model.Vehicle;
+import com.emit.vehicle.model.VehicleView;
 import com.emit.vehicle.service.vehicle.VehicleService;
 
 @RequestMapping("/vehicles")
@@ -32,13 +34,13 @@ public class VehicleController {
 	}
 	
 	@GetMapping("/vehicle-page")
-	public ResponseEntity<List<Vehicle>> getPageVehicle(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize){
-		return new ResponseEntity<List<Vehicle>>(vService.getPageVehicles(pageNumber, pageSize), HttpStatus.OK);
+	public ResponseEntity<List<VehicleView>> getPageVehicle(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize){
+		return new ResponseEntity<List<VehicleView>>(vService.getPageVehicles(pageNumber, pageSize), HttpStatus.OK);
 	}
 	
 	@GetMapping("/get-vehicle")
-	public ResponseEntity<Vehicle> getVehicleById(@RequestParam("idVehicle") Long id) {
-		return new ResponseEntity<Vehicle>(vService.getVehicleById(id), HttpStatus.OK);
+	public ResponseEntity<VehicleView> getVehicleById(@RequestParam("idVehicle") Long id) {
+		return new ResponseEntity<VehicleView>(vService.getVehicleById(id), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete-vehicle")

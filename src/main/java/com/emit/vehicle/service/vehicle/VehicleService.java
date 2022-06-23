@@ -1,14 +1,18 @@
 package com.emit.vehicle.service.vehicle;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.emit.vehicle.model.Vehicle;
+import com.emit.vehicle.model.VehicleView;
 
 public interface VehicleService {
 	List<Vehicle> getVehicles();
 	
-	List<Vehicle> getPageVehicles(int pageNumber, int pageSize);
+	List<VehicleView> getPageVehicles(int pageNumber, int pageSize);
 	
-	Vehicle getVehicleById(Long id);
+	VehicleView getVehicleById(Long id);
 	 
 	Vehicle saveVehicle(Vehicle vehicle);  
 	
