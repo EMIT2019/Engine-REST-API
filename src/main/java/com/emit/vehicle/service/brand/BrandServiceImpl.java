@@ -1,12 +1,15 @@
 package com.emit.vehicle.service.brand;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.emit.vehicle.dto.BrandDto;
 import com.emit.vehicle.model.Brand;
 import com.emit.vehicle.repository.BrandRepository;
 
@@ -51,5 +54,13 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public Brand updateBrand(Brand brand) {
 		return bRepository.save(brand);
+	}
+	
+	public BrandDto castEntityToDto(Brand brand) {
+		BrandDto brandDto = new BrandDto();
+		brandDto.setId_brand(brand.getId_brand());
+		brandDto.setBrand_name(brand.getBrand_name());
+		brandDto.setImg(brand.getImg());
+		return brandDto;
 	}
 }

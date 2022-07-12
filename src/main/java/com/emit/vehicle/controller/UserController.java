@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.emit.vehicle.model.User;
+import com.emit.vehicle.dto.UserDto;
+import com.emit.vehicle.dto.mapper.Impl.UserMapper;
+import com.emit.vehicle.dto.mapper.Impl.UserMapperImpl;
 import com.emit.vehicle.service.user.UserService;
 
 @RequestMapping("/user")
@@ -24,29 +26,34 @@ public class UserController {
 	@Autowired
 	private UserService uService; 
 	
+	private UserMapper mapper = new UserMapperImpl();
+	
 	@GetMapping("/get-user")
-	public ResponseEntity<User> getUserById(@RequestParam("idUser") Long id) {
-		return new ResponseEntity<User>(uService.getUserById(id), HttpStatus.OK);
+	public ResponseEntity<UserDto> getUserById(@RequestParam("idUser") Long id) {
+		return new ResponseEntity<UserDto>(mapper.toDto(uService.getUserById(id)), HttpStatus.OK);
 	}
 	
 	@PostMapping("/new-user")
-	public ResponseEntity<User> saveUser(@Valid @RequestBody User user) {
-		if(uService.validateUsername(user.getUsername()) != null) {
+	public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
+		if(uService.validateUsername(mapper.toEntity(userDto).getUsername()) != null) {
 			throw new RuntimeException("The username you typed is already in use");
 		}else {			
-			return new ResponseEntity<User>(uService.saveNewUser(user), HttpStatus.CREATED);
+			uService.saveNewUser(mapper.toEntity(userDto));
+			return new ResponseEntity<UserDto>(userDto, HttpStatus.CREATED);
 		}
 	}
 	
 	@PostMapping("/check-user")
-	public ResponseEntity<User> validateUser(@RequestBody User user) {
-		return new ResponseEntity<User>(uService.validateUser(user), HttpStatus.OK);
+	public ResponseEntity<UserDto> validateUser(@RequestBody UserDto userDto) {
+		uService.validateUser(mapper.toEntity(userDto));
+		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 	
 	@PutMapping("/update-user")
-	public ResponseEntity<User> updateUser(@RequestParam("idUser") Long id, @RequestBody User user) {
-		user.setIdUser(id);
-		return new ResponseEntity<User>(uService.updateUser(user), HttpStatus.OK);
+	public ResponseEntity<UserDto> updateUser(@RequestParam("idUser") Long id, @RequestBody UserDto userDto) {
+		userDto.setIdUser(id);
+		uService.updateUser(mapper.toEntity(userDto));
+		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete-user")

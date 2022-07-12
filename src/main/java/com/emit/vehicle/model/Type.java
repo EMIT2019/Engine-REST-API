@@ -15,7 +15,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "type")
-public class Type {
+public class Type implements ModelEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_type")

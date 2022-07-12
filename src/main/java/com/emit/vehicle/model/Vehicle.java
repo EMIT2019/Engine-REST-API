@@ -4,12 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.persistence.Id;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,19 +21,21 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "vehicle")
-public class Vehicle {
+public class Vehicle implements ModelEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_vehicle")
 	private Long idVehicle;
 
 	@NotNull(message = "The field brand needs to be specified")
-	@Column(name = "id_brand")  
-	private Long idBrand; 
+	@JoinColumn(name = "id_brand")
+	@OneToOne
+	private Brand brand; 
 
 	@NotNull(message = "The field type needs to be specified")
-	@Column(name = "id_type") 
-	private Long idType; 
+	@JoinColumn(name = "id_type")
+	@OneToOne
+	private Type type; 
 	
 	@Min(value = 1, message = "The field horsepower must be higher than 0")
 	@Column(name = "horsepower") 
