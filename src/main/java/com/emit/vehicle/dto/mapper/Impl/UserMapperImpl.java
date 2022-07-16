@@ -1,8 +1,12 @@
 package com.emit.vehicle.dto.mapper.Impl;
 
+import org.springframework.stereotype.Component;
+
 import com.emit.vehicle.dto.UserDto;
+import com.emit.vehicle.dto.mapper.UserMapper;
 import com.emit.vehicle.model.User;
 
+@Component
 public class UserMapperImpl implements UserMapper {
 
 	@Override

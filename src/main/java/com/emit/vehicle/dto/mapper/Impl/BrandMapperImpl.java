@@ -1,9 +1,12 @@
 package com.emit.vehicle.dto.mapper.Impl;
 
+import org.springframework.stereotype.Component;
+
 import com.emit.vehicle.dto.BrandDto;
 import com.emit.vehicle.dto.mapper.BrandMapper;
 import com.emit.vehicle.model.Brand;
 
+@Component
 public class BrandMapperImpl implements BrandMapper {
 
 	@Override

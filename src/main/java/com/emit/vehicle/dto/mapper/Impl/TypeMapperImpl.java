@@ -1,9 +1,12 @@
 package com.emit.vehicle.dto.mapper.Impl;
 
+import org.springframework.stereotype.Component;
+
 import com.emit.vehicle.dto.TypeDto;
 import com.emit.vehicle.dto.mapper.TypeMapper;
 import com.emit.vehicle.model.Type;
 
+@Component
 public class TypeMapperImpl implements TypeMapper {
 
 	@Override

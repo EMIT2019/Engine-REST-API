@@ -14,7 +14,7 @@ import com.emit.vehicle.repository.VehicleRepository;
 public class VehicleServiceImpl implements VehicleService {
 	
 	@Autowired
-	private VehicleRepository vRepository; 
+	private VehicleRepository vRepository;
 	
 	@Override
 	public List<Vehicle> getVehicles() {

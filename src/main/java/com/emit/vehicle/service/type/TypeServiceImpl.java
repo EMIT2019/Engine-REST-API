@@ -3,6 +3,7 @@ package com.emit.vehicle.service.type;
 import java.util.List;
 import java.util.Optional;
 
+import com.emit.vehicle.model.ModelEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,46 +14,41 @@ import com.emit.vehicle.repository.TypeRepository;
 
 @Service
 public class TypeServiceImpl implements TypeService {
-	
-	@Autowired
-	private TypeRepository tRepository;
 
-	@Override
-	public List<Type> getAllTypes() {
-		return tRepository.findAll();
-	}
-	
-	//Getting a range of records (JPA Pagination)
-	@Override
-	public List<Type> getPageType(int pageNumber, int pageSize){
-		Pageable page = PageRequest.of(pageNumber, pageSize);
-		return tRepository.findAll(page).getContent();
-	}
+    private final TypeRepository tService;
 
-	@Override
-	public Type getTypeById(Long id) {
-		Optional<Type> type = tRepository.findById(id);
-		
-		if(type.isPresent()) {
-			return type.get();
-		}
-		
-		throw new RuntimeException("Type with id "+id+" wasn't found");
-	}
+    public TypeServiceImpl(TypeRepository typeService){
+        this.tService = typeService;
+    }
 
-	@Override
-	public Type saveType(Type type) {
-		return tRepository.save(type);
-	}
 
-	@Override
-	public void deleteType(Long id) {
-		tRepository.deleteById(id);
-	}
+    @Override
+    public List<Type> getAllTypes() {
+        return tService.findAll();
+    }
 
-	@Override
-	public Type updateType(Type type) {
-		return tRepository.save(type);
-	}
+    @Override
+    public List<Type> getPageType(int pageNumber, int pageSize) {
+        return null;
+    }
 
+    @Override
+    public Type getTypeById(Long id) {
+        return null;
+    }
+
+    @Override
+    public Type saveType(Type type) {
+        return null;
+    }
+
+    @Override
+    public void deleteType(Long id) {
+
+    }
+
+    @Override
+    public Type updateType(Type type) {
+        return null;
+    }
 }

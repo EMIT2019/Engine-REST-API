@@ -1,16 +1,23 @@
 package com.emit.vehicle.dto.mapper.Impl;
 
+import org.springframework.stereotype.Component;
+
 import com.emit.vehicle.dto.VehicleDto;
 import com.emit.vehicle.dto.mapper.BrandMapper;
 import com.emit.vehicle.dto.mapper.TypeMapper;
 import com.emit.vehicle.dto.mapper.VehicleMapper;
 import com.emit.vehicle.model.Vehicle;
 
+@Component
 public class VehicleMapperImpl implements VehicleMapper {
-	
-	private BrandMapper brandMapper = new BrandMapperImpl();
-	private TypeMapper typeMapper = new TypeMapperImpl();
+	private final BrandMapper brandMapper;
+	private final TypeMapper typeMapper;
 
+	public VehicleMapperImpl(BrandMapper brandMapper, TypeMapper typeMapper) {
+		this.brandMapper = brandMapper; 
+		this.typeMapper = typeMapper; 
+	}
+	
 	@Override
 	public VehicleDto toDto(Vehicle entity) {
 		VehicleDto vehicleDto = new VehicleDto();

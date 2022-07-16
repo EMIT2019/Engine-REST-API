@@ -1,11 +1,10 @@
-package com.emit.vehicle.controller;
+package com.emit.vehicle.controller.Impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,17 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emit.vehicle.dto.VehicleDto;
 import com.emit.vehicle.dto.mapper.VehicleMapper;
-import com.emit.vehicle.dto.mapper.Impl.VehicleMapperImpl;
 import com.emit.vehicle.service.vehicle.VehicleService;
 
 @RequestMapping("/vehicles")
 @RestController
-public class VehicleController { 
+public class VehicleControllerImpl {
+	private final VehicleService vService;
 	
-	@Autowired
-	private VehicleService vService; 
-	
-	private VehicleMapper mapper = new VehicleMapperImpl();
+	private final VehicleMapper mapper;
+
+	public VehicleControllerImpl(VehicleService vService, VehicleMapper mapper){
+		this.vService = vService;
+		this.mapper = mapper;
+	}
 	
 	@GetMapping("/all-vehicles")
 	public ResponseEntity<List<VehicleDto>> getAllVehicles() {

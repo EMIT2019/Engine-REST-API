@@ -1,4 +1,4 @@
-package com.emit.vehicle.controller;
+package com.emit.vehicle.controller.Impl;
 
 import javax.validation.Valid;
 
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emit.vehicle.dto.UserDto;
-import com.emit.vehicle.dto.mapper.Impl.UserMapper;
+import com.emit.vehicle.dto.mapper.UserMapper;
 import com.emit.vehicle.dto.mapper.Impl.UserMapperImpl;
 import com.emit.vehicle.service.user.UserService;
 
 @RequestMapping("/user")
 @RestController
-public class UserController {
+public class UserControllerImpl {
 	
 	@Autowired
 	private UserService uService; 

@@ -3,17 +3,8 @@ package com.emit.vehicle.service.brand;
 import java.util.List;
 
 import com.emit.vehicle.model.Brand;
+import com.emit.vehicle.service.BaseService;
 
-public interface BrandService {
-	List<Brand> getAllBrands();
-	
-	List<Brand> getBrandPage(int pageNumber, int pageSize);
-	
-	Brand getBrandById(Long id);
-	
-	Brand saveBrand(Brand brand); 
-	
-	void deletebrand(Long id); 
-	
-	Brand updateBrand(Brand brand); 
+public interface BrandService<ID> extends BaseService<Brand, Long> {
+    List<Brand> getPage(ID pageNumber, ID pageSize);
 }
