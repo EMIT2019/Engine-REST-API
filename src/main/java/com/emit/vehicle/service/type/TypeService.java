@@ -3,17 +3,8 @@ package com.emit.vehicle.service.type;
 import java.util.List;
 
 import com.emit.vehicle.model.Type;
+import com.emit.vehicle.service.BaseService;
 
-public interface TypeService {
-	List<Type> getAllTypes();
-	
-	List<Type> getPageType(int pageNumber, int pageSize);
-	
-	Type getTypeById(Long id);
-	
-	Type saveType(Type type);
-	
-	void deleteType(Long id);
-	
-	Type updateType(Type type); 
+public interface TypeService extends BaseService<Type, Long> {
+
 }

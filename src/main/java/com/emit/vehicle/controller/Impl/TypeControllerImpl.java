@@ -1,8 +1,12 @@
 package com.emit.vehicle.controller.Impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.emit.vehicle.controller.TypeController;
+import com.emit.vehicle.dto.BrandDto;
+import com.emit.vehicle.model.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,50 +26,61 @@ import com.emit.vehicle.service.type.TypeService;
 
 @RequestMapping("/types")
 @RestController
-public class TypeControllerImpl {
+public class TypeControllerImpl implements TypeController {
 
-	@Autowired
-	private TypeService tService;
+	private final TypeService tService;
 
-	private TypeMapper mapper = new TypeMapperImpl();
+	private final TypeMapper mapper;
 
-	@GetMapping("/all-types")
-	public ResponseEntity<List<TypeDto>> getAllTypes(){
-		return new ResponseEntity<List<TypeDto>>(tService.getAllTypes().stream()
+	public TypeControllerImpl(TypeMapper mapper, TypeService typeService){
+		this.mapper = mapper;
+		this.tService = typeService;
+	}
+
+	@Override
+	public ResponseEntity<List<TypeDto>> getAll() {
+		List<TypeDto> typeDtoList = tService.getAll().stream()
 				.map(mapper::toDto)
-				.collect(Collectors.toList())
-				, HttpStatus.OK);
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(typeDtoList);
 	}
 
-	@GetMapping("type-page")
-	public ResponseEntity<List<TypeDto>> getPageType(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize){
-		return new ResponseEntity<List<TypeDto>>(tService.getPageType(pageNumber, pageSize).stream()
+	@Override
+	public ResponseEntity<TypeDto> getById(Long id) {
+		Type type;
+		type = tService.getById(id);
+		return ResponseEntity.ok(mapper.toDto(type));
+	}
+
+	@Override
+	public ResponseEntity<List<TypeDto>> getPage(Integer page, Integer records) {
+		List<TypeDto> typeDtoList = tService.getPage(page, records).stream()
 				.map(mapper::toDto)
-				.collect(Collectors.toList())
-				, HttpStatus.OK);
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(typeDtoList);
 	}
 
-	@GetMapping("/get-type")
-	public ResponseEntity<TypeDto> getTypeById(@RequestParam("idType") Long id) {
-		return new ResponseEntity<TypeDto>(mapper.toDto(tService.getTypeById(id)), HttpStatus.OK);
+	@Override
+	public ResponseEntity<TypeDto> save(TypeDto dtoEntity) {
+		Type type, savedType;
+		type = mapper.toEntity(dtoEntity);
+		savedType = tService.save(type);
+		return new ResponseEntity<TypeDto>(mapper.toDto(savedType), HttpStatus.CREATED);
 	}
 
-	@PostMapping("/save-type")
-	public ResponseEntity<TypeDto> saveType(@RequestBody TypeDto typeDto) {
-		tService.saveType(mapper.toEntity(typeDto));
-		return new ResponseEntity<TypeDto>(typeDto, HttpStatus.CREATED);
+	@Override
+	public ResponseEntity<TypeDto> update(Long id, TypeDto dtoEntity) {
+		dtoEntity.setId_type(id);
+		Type type, updatedType;
+		type = mapper.toEntity(dtoEntity);
+		updatedType = tService.update(type);
+		return ResponseEntity.ok(mapper.toDto(updatedType));
 	}
 
-	@PutMapping("/update-type")
-	public ResponseEntity<TypeDto> updateType(@RequestParam("idType") Long id, @RequestBody TypeDto typeDto) {
-		typeDto.setId_type(id);
-		tService.updateType(mapper.toEntity(typeDto));
-		return new ResponseEntity<TypeDto>(typeDto, HttpStatus.OK);
-	}
-
-	@DeleteMapping("/delete-type")
-	public ResponseEntity<HttpStatus> deleteType(@RequestParam("idType") Long id) {
-		tService.deleteType(id);
-		return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+	@Override
+	public void delete(Long id) {
+		tService.delete(id);
 	}
 }

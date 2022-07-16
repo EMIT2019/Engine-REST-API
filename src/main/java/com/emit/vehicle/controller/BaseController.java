@@ -18,13 +18,13 @@ public interface BaseController<T extends DtoEntity, ID> {
     ResponseEntity<T> getById(@RequestParam("id") ID id);
 
     @GetMapping("/page/{page}/{records}")
-    ResponseEntity<List<BrandDto>> getPage(@PathVariable Integer page, @PathVariable Integer records);
+    ResponseEntity<List<T>> getPage(@PathVariable Integer page, @PathVariable Integer records);
 
     @PostMapping("/save")
-    ResponseEntity<T> save(T dtoEntity);
+    ResponseEntity<T> save(@RequestBody T dtoEntity);
 
-    @PostMapping("/update")
-    ResponseEntity<T> update(@RequestParam("id") ID id, T dtoEntity);
+    @PutMapping("/update")
+    ResponseEntity<T> update(@RequestParam("id") ID id,@RequestBody T dtoEntity);
 
     @DeleteMapping("/delete")
     void delete(@RequestParam("id") ID id);

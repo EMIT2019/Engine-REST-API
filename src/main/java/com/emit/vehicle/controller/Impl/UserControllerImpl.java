@@ -2,6 +2,7 @@ package com.emit.vehicle.controller.Impl;
 
 import javax.validation.Valid;
 
+import com.emit.vehicle.controller.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,46 +20,74 @@ import com.emit.vehicle.dto.mapper.UserMapper;
 import com.emit.vehicle.dto.mapper.Impl.UserMapperImpl;
 import com.emit.vehicle.service.user.UserService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequestMapping("/user")
 @RestController
-public class UserControllerImpl {
-	
-	@Autowired
-	private UserService uService; 
-	
-	private UserMapper mapper = new UserMapperImpl();
-	
-	@GetMapping("/get-user")
-	public ResponseEntity<UserDto> getUserById(@RequestParam("idUser") Long id) {
-		return new ResponseEntity<UserDto>(mapper.toDto(uService.getUserById(id)), HttpStatus.OK);
-	}
-	
-	@PostMapping("/new-user")
-	public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
-		if(uService.validateUsername(mapper.toEntity(userDto).getUsername()) != null) {
-			throw new RuntimeException("The username you typed is already in use");
-		}else {			
-			uService.saveNewUser(mapper.toEntity(userDto));
-			return new ResponseEntity<UserDto>(userDto, HttpStatus.CREATED);
-		}
-	}
-	
-	@PostMapping("/check-user")
-	public ResponseEntity<UserDto> validateUser(@RequestBody UserDto userDto) {
-		uService.validateUser(mapper.toEntity(userDto));
-		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
-	}
-	
-	@PutMapping("/update-user")
-	public ResponseEntity<UserDto> updateUser(@RequestParam("idUser") Long id, @RequestBody UserDto userDto) {
-		userDto.setIdUser(id);
-		uService.updateUser(mapper.toEntity(userDto));
-		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
-	}
-	
-	@DeleteMapping("/delete-user")
-	public ResponseEntity<HttpStatus> deleteUser(@RequestParam("idUser") Long id) {
-		uService.deleteUser(id);
-		return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
-	}
+public class UserControllerImpl implements UserController {
+
+    private final UserService uService;
+
+    private final UserMapper mapper;
+
+    public UserControllerImpl(UserService userService, UserMapper userMapper){
+        this.uService = userService;
+        this.mapper = userMapper;
+    }
+
+    @Override
+    public ResponseEntity<List<UserDto>> getAll() {
+        List<UserDto> userDtoList = uService.getAll().stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDtoList);
+    }
+
+    @Override
+    public ResponseEntity<UserDto> getById(Long id) {
+        return ResponseEntity.ok(
+                mapper.toDto(
+                        uService.getById(id)
+                )
+        );
+    }
+
+    @Override
+    public ResponseEntity<List<UserDto>> getPage(Integer page, Integer records) {
+        List<UserDto> userDtoList = uService.getPage(page, records).stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDtoList);
+    }
+
+    @Override
+    public ResponseEntity<UserDto> save(UserDto dtoEntity) {
+        return new ResponseEntity<UserDto>(
+                mapper.toDto(
+                        uService.save(
+                                mapper.toEntity(dtoEntity)
+                        )
+                ),
+                HttpStatus.CREATED
+        );
+    }
+
+    @Override
+    public ResponseEntity<UserDto> update(Long id, UserDto dtoEntity) {
+        dtoEntity.setIdUser(id);
+        return new ResponseEntity<UserDto>(
+                mapper.toDto(
+                        uService.save(
+                                mapper.toEntity(dtoEntity)
+                        )
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @Override
+    public void delete(Long id) {
+        uService.delete(id);
+    }
 }

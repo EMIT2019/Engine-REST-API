@@ -21,34 +21,40 @@ public class TypeServiceImpl implements TypeService {
         this.tService = typeService;
     }
 
-
     @Override
-    public List<Type> getAllTypes() {
+    public List<Type> getAll() {
         return tService.findAll();
     }
 
     @Override
-    public List<Type> getPageType(int pageNumber, int pageSize) {
-        return null;
+    public Type getById(Long id) {
+        Optional<Type> type = tService.findById(id);
+
+        if(type.isPresent()){
+            return type.get();
+        }
+
+        throw new RuntimeException("The item with id "+id+" doesn't exists");
     }
 
     @Override
-    public Type getTypeById(Long id) {
-        return null;
+    public List<Type> getPage(Integer pageNumber, Integer pageSize) {
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        return tService.findAll(page).getContent();
     }
 
     @Override
-    public Type saveType(Type type) {
-        return null;
+    public Type save(Type entity) {
+        return tService.save(entity);
     }
 
     @Override
-    public void deleteType(Long id) {
-
+    public Type update(Type entity) {
+        return tService.save(entity);
     }
 
     @Override
-    public Type updateType(Type type) {
-        return null;
+    public void delete(Long id) {
+        tService.deleteById(id);
     }
 }

@@ -14,7 +14,7 @@ import com.emit.vehicle.model.Brand;
 import com.emit.vehicle.repository.BrandRepository;
 
 @Service
-public class BrandServiceImpl implements BrandService<Integer> {
+public class BrandServiceImpl implements BrandService {
 
 	private final BrandRepository bRepository;
 

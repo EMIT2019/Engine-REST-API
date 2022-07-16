@@ -1,8 +1,11 @@
 package com.emit.vehicle.service.user;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.User;
@@ -10,44 +13,46 @@ import com.emit.vehicle.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService  {
-	
-	@Autowired
-	private UserRepository uRepository; 
 
-	@Override
-	public User saveNewUser(User user) {
-		return uRepository.save(user);
-	}
+    private final UserRepository uRepository;
 
-	@Override
-	public User updateUser(User user) {
-		return uRepository.save(user);
-	}
+    public UserServiceImpl(UserRepository userRepository){
+        this.uRepository = userRepository;
+    }
 
-	@Override
-	public void deleteUser(Long id) {
-		uRepository.deleteById(id);
-	}
+    @Override
+    public List<User> getAll() {
+        return uRepository.findAll();
+    }
 
-	@Override
-	public User getUserById(Long id) {
-		Optional<User> user = uRepository.findById(id);
-		
-		if(user.isPresent()) {
-			return user.get();
-		}
-		
-		throw new RuntimeException("User with id "+id+" wasn't found");
-	}
+    @Override
+    public User getById(Long id) {
+        Optional<User> user = uRepository.findById(id);
 
-	@Override
-	public User validateUser(User user) {
-		return uRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-	}
+        if(user.isPresent()){
+            return user.get();
+        }
+        throw new RuntimeException("The item with the id "+id+" doesn't exists");
+    }
 
-	@Override
-	public User validateUsername(String username) {
-		return uRepository.findByUsername(username);
-	}
+    @Override
+    public List<User> getPage(Integer pageNumber, Integer pageSize) {
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        return uRepository.findAll(page).getContent();
+    }
 
+    @Override
+    public User save(User entity) {
+        return uRepository.save(entity);
+    }
+
+    @Override
+    public User update(User entity) {
+        return uRepository.save(entity);
+    }
+
+    @Override
+    public void delete(Long id) {
+        uRepository.deleteById(id);
+    }
 }

@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.emit.vehicle.controller.VehicleController;
+import com.emit.vehicle.model.Vehicle;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,54 +25,59 @@ import com.emit.vehicle.service.vehicle.VehicleService;
 
 @RequestMapping("/vehicles")
 @RestController
-public class VehicleControllerImpl {
+public class VehicleControllerImpl implements VehicleController {
+
 	private final VehicleService vService;
-	
+
 	private final VehicleMapper mapper;
 
-	public VehicleControllerImpl(VehicleService vService, VehicleMapper mapper){
-		this.vService = vService;
-		this.mapper = mapper;
+	public VehicleControllerImpl(VehicleService vehicleService, VehicleMapper vehicleMapper){
+		this.vService = vehicleService;
+		this.mapper = vehicleMapper;
 	}
-	
-	@GetMapping("/all-vehicles")
-	public ResponseEntity<List<VehicleDto>> getAllVehicles() {
-		return new ResponseEntity<List<VehicleDto>>(vService.getVehicles().stream()
+
+	@Override
+	public ResponseEntity<List<VehicleDto>> getAll() {
+		List<VehicleDto> vehicleDtoList = vService.getAll().stream()
 				.map(mapper::toDto)
-				.collect(Collectors.toList())
-				, HttpStatus.OK);
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(vehicleDtoList);
 	}
-	
-	@GetMapping("/vehicle-page")
-	public ResponseEntity<List<VehicleDto>> getPageVehicle(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize){
-		return new ResponseEntity<List<VehicleDto>>(vService.getPageVehicles(pageNumber, pageSize).stream()
+
+	@Override
+	public ResponseEntity<VehicleDto> getById(Long id) {
+		Vehicle vehicle;
+		vehicle = vService.getById(id);
+		return ResponseEntity.ok(mapper.toDto(vehicle));
+	}
+
+	@Override
+	public ResponseEntity<List<VehicleDto>> getPage(Integer page, Integer records) {
+		List<VehicleDto> vehicleDtoList = vService.getPage(page, records).stream()
 				.map(mapper::toDto)
-				.collect(Collectors.toList())
-				, HttpStatus.OK);
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(vehicleDtoList);
 	}
-	
-	@GetMapping("/get-vehicle")
-	public ResponseEntity<VehicleDto> getVehicleById(@RequestParam("idVehicle") Long id) {
-		return new ResponseEntity<VehicleDto>(mapper.toDto(vService.getVehicleById(id)), HttpStatus.OK);
+
+	@Override
+	public ResponseEntity<VehicleDto> save(VehicleDto dtoEntity) {
+		Vehicle vehicle, savedVehicle;
+		vehicle = mapper.toEntity(dtoEntity);
+		savedVehicle = vService.save(vehicle);
+		return new ResponseEntity<VehicleDto>(mapper.toDto(savedVehicle), HttpStatus.CREATED);
 	}
-	
-	@DeleteMapping("/delete-vehicle")
-	public ResponseEntity<HttpStatus> deleteVehicle(@RequestParam("idVehicle") Long id) {
-		vService.deleteVehicle(id);	
-		return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+
+	@Override
+	public ResponseEntity<VehicleDto> update(Long id, VehicleDto dtoEntity) {
+		dtoEntity.setIdVehicle(id);
+		Vehicle vehicle, updatedVehicle;
+		vehicle = mapper.toEntity(dtoEntity);
+		updatedVehicle = vService.save(vehicle);
+		return ResponseEntity.ok(mapper.toDto(updatedVehicle));
 	}
-	
-	@PostMapping("/save-vehicle")
-	public ResponseEntity<VehicleDto> saveVehicle(@Valid @RequestBody VehicleDto vehicleDto) {
-		vService.saveVehicle(mapper.toEntity(vehicleDto));
-		return new ResponseEntity<VehicleDto>(vehicleDto, HttpStatus.CREATED);
+
+	@Override
+	public void delete(Long id) {
+		vService.delete(id);
 	}
-	
-	@PutMapping("/update-vehicle")
-	public ResponseEntity<VehicleDto> updateVehicle(@RequestParam("idVehicle") Long id, @RequestBody VehicleDto vehicleDto) {
-		vehicleDto.setIdVehicle(id);
-		vService.updateVehicle(mapper.toEntity(vehicleDto));
-		return new ResponseEntity<VehicleDto>(vehicleDto, HttpStatus.OK);
-	}
-	
 }

@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/brands")
 @RestController
 public class BrandControllerImpl implements BrandController {
-	private final BrandService<Integer> bService;
+	private final BrandService bService;
 	
 	private final BrandMapper mapper;
 
-	public BrandControllerImpl(BrandService<Integer> brandService, BrandMapper brandMapper){
+	public BrandControllerImpl(BrandService brandService, BrandMapper brandMapper){
 		this.bService = brandService;
 		this.mapper = brandMapper;
 	}
@@ -40,7 +40,9 @@ public class BrandControllerImpl implements BrandController {
 
 	@Override
 	public ResponseEntity<BrandDto> getById(Long id) {
-		return ResponseEntity.ok(mapper.toDto(bService.getById(id)));
+		Brand brand;
+		brand  = bService.getById(id);
+		return ResponseEntity.ok(mapper.toDto(brand));
 	}
 
 	@Override
@@ -54,26 +56,19 @@ public class BrandControllerImpl implements BrandController {
 
 	@Override
 	public ResponseEntity<BrandDto> save(BrandDto dtoEntity) {
-		return new ResponseEntity<BrandDto>(
-				mapper.toDto(
-						bService.save(
-								mapper.toEntity(dtoEntity)
-						)
-				),
-				HttpStatus.CREATED
-		);
+		Brand brand, savedBrand;
+		brand  = mapper.toEntity(dtoEntity);
+		savedBrand = bService.save(brand);
+		return new ResponseEntity<BrandDto>(mapper.toDto(savedBrand), HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<BrandDto> update(Long id, BrandDto dtoEntity) {
 		dtoEntity.setId_brand(id);
-		return ResponseEntity.ok(
-				mapper.toDto(
-						bService.update(
-								mapper.toEntity(dtoEntity)
-						)
-				)
-		);
+		Brand brand, updatedBrand;
+		brand = mapper.toEntity(dtoEntity);
+		updatedBrand = bService.update(brand);
+		return ResponseEntity.ok(mapper.toDto(updatedBrand));
 	}
 
 	@Override
