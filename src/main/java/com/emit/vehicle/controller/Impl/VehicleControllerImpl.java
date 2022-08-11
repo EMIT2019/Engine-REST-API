@@ -79,4 +79,13 @@ public class VehicleControllerImpl implements VehicleController {
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(vehicleDtoList);
 	}
+
+	@Override
+	public ResponseEntity<List<VehicleDto>> getAllByGivenModel(String modelName) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenModel(modelName).stream()
+				.map(mapper::toGetDtoEntity)
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(vehicleDtoList);
+	}
 }

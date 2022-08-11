@@ -70,4 +70,15 @@ public class VehicleServiceImpl implements VehicleService {
 
 		return vRepository.findAll(new VehicleSpecification(criteria));
 	}
+
+	@Override
+	public List<Vehicle> getAllByGivenModel(String modelName) {
+		SearchCriteria criteria = new SearchCriteria(
+				VehicleParameter.VEHICLE_MODEL_FIELD.getValue(),
+				OperationParameter.EQUALS_TO.getValue(),
+				modelName
+		);
+
+		return vRepository.findAll(new VehicleSpecification(criteria));
+	}
 }
