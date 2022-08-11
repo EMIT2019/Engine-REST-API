@@ -94,11 +94,22 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public List<Vehicle> getAllByGivenSpeed(Long topSpeed) {
+	public List<Vehicle> getAllByFasterThan(Long topSpeed) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_TS_FIELD.getValue(),
 				OperationParameter.GREATER_THAN.getValue(),
 				topSpeed
+		);
+
+		return vRepository.findAll(new VehicleSpecification(criteria));
+	}
+
+	@Override
+	public List<Vehicle> getAllByHorsePowerGreaterThan(Long horsepower) {
+		SearchCriteria criteria = new SearchCriteria(
+				VehicleParameter.VEHICLE_HP_FIELD.getValue(),
+				OperationParameter.GREATER_THAN.getValue(),
+				horsepower
 		);
 
 		return vRepository.findAll(new VehicleSpecification(criteria));

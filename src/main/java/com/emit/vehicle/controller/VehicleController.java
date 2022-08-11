@@ -1,7 +1,6 @@
 package com.emit.vehicle.controller;
 
 import com.emit.vehicle.dto.VehicleDto;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +20,8 @@ public interface VehicleController extends BaseController<VehicleDto, Long> {
     ResponseEntity<List<VehicleDto>> getAllByGivenType(@RequestParam("type") String typeName);
 
     @GetMapping("/getFasterThan")
-    ResponseEntity<List<VehicleDto>> getAllByGivenSpeed(@RequestParam("speed") Long speed);
+    ResponseEntity<List<VehicleDto>> getAllByFasterThan(@RequestParam("speed") Long speed);
+
+    @GetMapping("/getHPGreaterThan")
+    ResponseEntity<List<VehicleDto>> getAllByHorsePowerGreaterThan(@RequestParam("horsepower") Long horsepower);
 }

@@ -99,11 +99,22 @@ public class VehicleControllerImpl implements VehicleController {
 	}
 
 	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByGivenSpeed(Long speed) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByGivenSpeed(speed).stream()
+	public ResponseEntity<List<VehicleDto>> getAllByFasterThan(Long speed) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByFasterThan(speed).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(vehicleDtoList);
 	}
+
+	@Override
+	public ResponseEntity<List<VehicleDto>> getAllByHorsePowerGreaterThan(Long horsepower) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByHorsePowerGreaterThan(horsepower).stream()
+				.map(mapper::toGetDtoEntity)
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(vehicleDtoList);
+	}
+
+
 }

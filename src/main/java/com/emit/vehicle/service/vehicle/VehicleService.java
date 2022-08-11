@@ -13,5 +13,7 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
 
     List<Vehicle> getAllByGivenType(String typeName);
 
-    List<Vehicle> getAllByGivenSpeed(Long topSpeed);
+    List<Vehicle> getAllByFasterThan(Long topSpeed);
+
+    List<Vehicle> getAllByHorsePowerGreaterThan(Long horsepower);
 }
