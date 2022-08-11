@@ -81,4 +81,26 @@ public class VehicleServiceImpl implements VehicleService {
 
 		return vRepository.findAll(new VehicleSpecification(criteria));
 	}
+
+	@Override
+	public List<Vehicle> getAllByGivenType(String typeName) {
+		SearchCriteria criteria = new SearchCriteria(
+				VehicleParameter.VEHICLE_TYPE_FIELD.getValue(),
+				OperationParameter.EQUALS_TO.getValue(),
+				typeName
+		);
+
+		return vRepository.findAll(new VehicleSpecification(criteria));
+	}
+
+	@Override
+	public List<Vehicle> getAllByGivenSpeed(Long topSpeed) {
+		SearchCriteria criteria = new SearchCriteria(
+				VehicleParameter.VEHICLE_TS_FIELD.getValue(),
+				OperationParameter.GREATER_THAN.getValue(),
+				topSpeed
+		);
+
+		return vRepository.findAll(new VehicleSpecification(criteria));
+	}
 }

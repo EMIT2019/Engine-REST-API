@@ -16,4 +16,10 @@ public interface VehicleController extends BaseController<VehicleDto, Long> {
 
     @GetMapping("/getByModel")
     ResponseEntity<List<VehicleDto>> getAllByGivenModel(@RequestParam("model") String modelName);
+
+    @GetMapping("/getByType")
+    ResponseEntity<List<VehicleDto>> getAllByGivenType(@RequestParam("type") String typeName);
+
+    @GetMapping("/getFasterThan")
+    ResponseEntity<List<VehicleDto>> getAllByGivenSpeed(@RequestParam("speed") Long speed);
 }

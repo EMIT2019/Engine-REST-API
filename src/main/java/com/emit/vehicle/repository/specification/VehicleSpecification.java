@@ -1,9 +1,11 @@
 package com.emit.vehicle.repository.specification;
 
 import com.emit.vehicle.model.Brand;
+import com.emit.vehicle.model.Type;
 import com.emit.vehicle.model.Vehicle;
 import com.emit.vehicle.repository.specification.parameters.BrandParameter;
 import com.emit.vehicle.repository.specification.parameters.OperationParameter;
+import com.emit.vehicle.repository.specification.parameters.TypeParameter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -37,10 +39,21 @@ public class VehicleSpecification implements Specification<Vehicle> {
             );
         } else if(criteria.getOperation().equalsIgnoreCase(OperationParameter.EQUALS_TO.getValue())) {
             if(root.get(criteria.getKey()).getJavaType() == Brand.class){
-                Join<Brand, Vehicle> brandVehicles = root.join(criteria.getKey());
+                Join<Brand, Vehicle> brandVehiclesJoin = root.join(criteria.getKey());
                 return criteriaBuilder.like(
-                        brandVehicles.get(BrandParameter.BRAND_NAME_FIELD.getValue()), "%" + criteria.getValue() + "%"
+                        brandVehiclesJoin.get(BrandParameter.BRAND_NAME_FIELD.getValue()), "%" + criteria.getValue() + "%"
                 );
+            } else if(root.get(criteria.getKey()).getJavaType() == Type.class){
+                Join<Type, Vehicle> typeVehicleJoin = root.join(criteria.getKey());
+                return criteriaBuilder.like(
+                        typeVehicleJoin.get(TypeParameter.TYPE_NAME_FIELD.getValue()), "%" +  criteria.getValue() + "%"
+                );
+            } else if(root.get(criteria.getKey()).getJavaType() == String.class){
+                return criteriaBuilder.like(
+                        root.<String> get(criteria.getKey()), "%" + criteria.getValue() + "%"
+                );
+            } else {
+                return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
             }
         }
         return null;

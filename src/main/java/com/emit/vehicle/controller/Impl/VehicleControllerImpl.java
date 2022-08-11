@@ -88,4 +88,22 @@ public class VehicleControllerImpl implements VehicleController {
 
 		return ResponseEntity.ok(vehicleDtoList);
 	}
+
+	@Override
+	public ResponseEntity<List<VehicleDto>> getAllByGivenType(String typeName) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenType(typeName).stream()
+				.map(mapper::toGetDtoEntity)
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(vehicleDtoList);
+	}
+
+	@Override
+	public ResponseEntity<List<VehicleDto>> getAllByGivenSpeed(Long speed) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenSpeed(speed).stream()
+				.map(mapper::toGetDtoEntity)
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(vehicleDtoList);
+	}
 }
