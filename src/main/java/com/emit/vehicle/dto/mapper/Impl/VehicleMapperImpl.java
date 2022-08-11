@@ -19,29 +19,28 @@ public class VehicleMapperImpl implements VehicleMapper {
 	}
 	
 	@Override
-	public VehicleDto toDto(Vehicle entity) {
-		VehicleDto vehicleDto = new VehicleDto();
-		vehicleDto.setIdVehicle(entity.getIdVehicle());
-		vehicleDto.setBrand(brandMapper.toDto(entity.getBrand()));
-		vehicleDto.setType(typeMapper.toDto(entity.getType()));
-		vehicleDto.setHorsepower(entity.getHorsepower());
-		vehicleDto.setTop_speed(entity.getTop_speed());
-		vehicleDto.setImg(entity.getImg());
-		vehicleDto.setModel(entity.getModel());
-		return vehicleDto;
+	public VehicleDto toGetDtoEntity(Vehicle entity) {
+		VehicleDto vehicleGetDto = new VehicleDto();
+		vehicleGetDto.setIdVehicle(entity.getIdVehicle());
+		vehicleGetDto.setBrand(brandMapper.toGetDtoEntity(entity.getBrand()));
+		vehicleGetDto.setType(typeMapper.toGetDtoEntity(entity.getType()));
+		vehicleGetDto.setHorsepower(entity.getHorsepower());
+		vehicleGetDto.setTop_speed(entity.getTop_speed());
+		vehicleGetDto.setImg(entity.getImg());
+		vehicleGetDto.setModel(entity.getModel());
+		return vehicleGetDto;
 	}
 
 	@Override
-	public Vehicle toEntity(VehicleDto dto) {
+	public Vehicle toPostEntity(VehicleDto dto) {
 		Vehicle vehicle = new Vehicle();
 		vehicle.setIdVehicle(dto.getIdVehicle());
-		vehicle.setBrand(brandMapper.toEntity(dto.getBrand()));
-		vehicle.setType(typeMapper.toEntity(dto.getType()));
+		vehicle.setBrand(brandMapper.toPostEntity(dto.getBrand()));
+		vehicle.setType(typeMapper.toPostEntity(dto.getType()));
 		vehicle.setHorsepower(dto.getHorsepower());
 		vehicle.setTop_speed(dto.getTop_speed());
 		vehicle.setImg(dto.getImg());
 		vehicle.setModel(dto.getModel());
 		return vehicle;
 	}
-
 }

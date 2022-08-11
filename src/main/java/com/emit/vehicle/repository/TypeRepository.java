@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.emit.vehicle.model.Type;
 
 @Repository
-public interface TypeRepository extends JpaRepository<Type, Long> {
+public interface TypeRepository extends BaseRepository<Type, Long> {
 	
 }

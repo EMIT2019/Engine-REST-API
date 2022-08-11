@@ -1,23 +1,13 @@
 package com.emit.vehicle.controller.Impl;
 
-import javax.validation.Valid;
-
 import com.emit.vehicle.controller.UserController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emit.vehicle.dto.UserDto;
 import com.emit.vehicle.dto.mapper.UserMapper;
-import com.emit.vehicle.dto.mapper.Impl.UserMapperImpl;
 import com.emit.vehicle.service.user.UserService;
 
 import java.util.List;
@@ -39,7 +29,7 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<List<UserDto>> getAll() {
         List<UserDto> userDtoList = uService.getAll().stream()
-                .map(mapper::toDto)
+                .map(mapper::toGetDtoEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDtoList);
     }
@@ -47,7 +37,7 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<UserDto> getById(Long id) {
         return ResponseEntity.ok(
-                mapper.toDto(
+                mapper.toGetDtoEntity(
                         uService.getById(id)
                 )
         );
@@ -56,7 +46,7 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<List<UserDto>> getPage(Integer page, Integer records) {
         List<UserDto> userDtoList = uService.getPage(page, records).stream()
-                .map(mapper::toDto)
+                .map(mapper::toGetDtoEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDtoList);
     }
@@ -64,9 +54,9 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<UserDto> save(UserDto dtoEntity) {
         return new ResponseEntity<UserDto>(
-                mapper.toDto(
+                mapper.toGetDtoEntity(
                         uService.save(
-                                mapper.toEntity(dtoEntity)
+                                mapper.toPostEntity(dtoEntity)
                         )
                 ),
                 HttpStatus.CREATED
@@ -77,9 +67,9 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<UserDto> update(Long id, UserDto dtoEntity) {
         dtoEntity.setIdUser(id);
         return new ResponseEntity<UserDto>(
-                mapper.toDto(
+                mapper.toGetDtoEntity(
                         uService.save(
-                                mapper.toEntity(dtoEntity)
+                                mapper.toPostEntity(dtoEntity)
                         )
                 ),
                 HttpStatus.OK

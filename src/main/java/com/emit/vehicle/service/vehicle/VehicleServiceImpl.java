@@ -2,9 +2,14 @@ package com.emit.vehicle.service.vehicle;
 
 import java.util.*;
 
+import com.emit.vehicle.repository.specification.SearchCriteria;
+import com.emit.vehicle.repository.specification.VehicleSpecification;
+import com.emit.vehicle.repository.specification.parameters.OperationParameter;
+import com.emit.vehicle.repository.specification.parameters.VehicleParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.Vehicle;
@@ -53,5 +58,16 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public void delete(Long id) {
 		vRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Vehicle> getAllByGivenBrand(String brandName) {
+		SearchCriteria criteria = new SearchCriteria(
+				VehicleParameter.VEHICLE_BRAND_FIELD.getValue(),
+				OperationParameter.EQUALS_TO.getValue(),
+				brandName
+		);
+
+		return vRepository.findAll(new VehicleSpecification(criteria));
 	}
 }

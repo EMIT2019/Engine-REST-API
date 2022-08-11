@@ -1,5 +1,6 @@
 package com.emit.vehicle.dto;
 
+import com.emit.vehicle.dto.DtoEntity;
 import lombok.Data;
 
 @Data

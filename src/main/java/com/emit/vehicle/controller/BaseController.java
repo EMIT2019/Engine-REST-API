@@ -1,8 +1,6 @@
 package com.emit.vehicle.controller;
 
-import com.emit.vehicle.dto.BrandDto;
 import com.emit.vehicle.dto.DtoEntity;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

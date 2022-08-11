@@ -10,7 +10,7 @@ import com.emit.vehicle.model.User;
 public class UserMapperImpl implements UserMapper {
 
 	@Override
-	public UserDto toDto(User entity) {
+	public UserDto toGetDtoEntity(User entity) {
 		UserDto userDto = new UserDto();
 		userDto.setIdUser(entity.getIdUser());
 		userDto.setName(entity.getName());
@@ -21,7 +21,7 @@ public class UserMapperImpl implements UserMapper {
 	}
 
 	@Override
-	public User toEntity(UserDto dto) {
+	public User toPostEntity(UserDto dto) {
 		User user = new User();
 		user.setIdUser(dto.getIdUser());
 		user.setName(dto.getName());

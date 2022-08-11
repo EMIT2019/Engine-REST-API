@@ -2,14 +2,15 @@ package com.emit.vehicle.service.brand;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.emit.vehicle.repository.specification.BrandSpecification;
+import com.emit.vehicle.repository.specification.SearchCriteria;
+import com.emit.vehicle.repository.specification.parameters.BrandParameter;
+import com.emit.vehicle.repository.specification.parameters.OperationParameter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.emit.vehicle.dto.BrandDto;
 import com.emit.vehicle.model.Brand;
 import com.emit.vehicle.repository.BrandRepository;
 
@@ -57,5 +58,16 @@ public class BrandServiceImpl implements BrandService {
 	public List<Brand> getPage(Integer pageNumber, Integer pageSize) {
 		Pageable page = PageRequest.of(pageNumber, pageSize);
 		return bRepository.findAll(page).getContent();
+	}
+
+	@Override
+	public List<Brand> getBrandByGivenName(String brandName) {
+		SearchCriteria criteria = new SearchCriteria(
+				BrandParameter.BRAND_NAME_FIELD.getValue(),
+				OperationParameter.EQUALS_TO.getValue(),
+				brandName
+		);
+
+		return bRepository.findAll(new BrandSpecification(criteria));
 	}
 }

@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.emit.vehicle.model.Brand;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand, Long> {
-
+public interface BrandRepository extends BaseRepository<Brand, Long> {
 }

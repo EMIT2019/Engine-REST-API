@@ -8,4 +8,5 @@ import org.springframework.data.domain.Page;
 import com.emit.vehicle.model.Vehicle;
 
 public interface VehicleService extends BaseService<Vehicle, Long> {
+    List<Vehicle> getAllByGivenBrand(String brandName);
 }

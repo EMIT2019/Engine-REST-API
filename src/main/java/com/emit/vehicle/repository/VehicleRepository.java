@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 import com.emit.vehicle.model.Vehicle;
 
 @Repository
-public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
+public interface VehicleRepository extends BaseRepository<Vehicle, Long> {
 
 }

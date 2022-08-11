@@ -1,11 +1,8 @@
 package com.emit.vehicle.controller.Impl;
 
-import com.emit.vehicle.controller.BaseController;
 import com.emit.vehicle.controller.BrandController;
 import com.emit.vehicle.dto.BrandDto;
 import com.emit.vehicle.model.Brand;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +29,7 @@ public class BrandControllerImpl implements BrandController {
 	@Override
 	public ResponseEntity<List<BrandDto>> getAll() {
 		List<BrandDto> brandDtoList = bService.getAll().stream()
-				.map(mapper::toDto)
+				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(brandDtoList);
@@ -42,13 +39,13 @@ public class BrandControllerImpl implements BrandController {
 	public ResponseEntity<BrandDto> getById(Long id) {
 		Brand brand;
 		brand  = bService.getById(id);
-		return ResponseEntity.ok(mapper.toDto(brand));
+		return ResponseEntity.ok(mapper.toGetDtoEntity(brand));
 	}
 
 	@Override
 	public ResponseEntity<List<BrandDto>> getPage(Integer page, Integer records) {
 		List<BrandDto> brandDtoList = bService.getPage(page, records).stream()
-				.map(mapper::toDto)
+				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(brandDtoList);
@@ -57,22 +54,30 @@ public class BrandControllerImpl implements BrandController {
 	@Override
 	public ResponseEntity<BrandDto> save(BrandDto dtoEntity) {
 		Brand brand, savedBrand;
-		brand  = mapper.toEntity(dtoEntity);
+		brand  = mapper.toPostEntity(dtoEntity);
 		savedBrand = bService.save(brand);
-		return new ResponseEntity<BrandDto>(mapper.toDto(savedBrand), HttpStatus.CREATED);
+		return new ResponseEntity<BrandDto>(mapper.toGetDtoEntity(savedBrand), HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<BrandDto> update(Long id, BrandDto dtoEntity) {
 		dtoEntity.setId_brand(id);
 		Brand brand, updatedBrand;
-		brand = mapper.toEntity(dtoEntity);
+		brand = mapper.toPostEntity(dtoEntity);
 		updatedBrand = bService.update(brand);
-		return ResponseEntity.ok(mapper.toDto(updatedBrand));
+		return ResponseEntity.ok(mapper.toGetDtoEntity(updatedBrand));
 	}
 
 	@Override
 	public void delete(Long id) {
 		bService.delete(id);
+	}
+
+	@Override
+	public ResponseEntity<List<BrandDto>> getAllByGivenName(String name) {
+		List<BrandDto> brandDtoList = bService.getBrandByGivenName(name).stream()
+				.map(mapper::toGetDtoEntity)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(brandDtoList);
 	}
 }
