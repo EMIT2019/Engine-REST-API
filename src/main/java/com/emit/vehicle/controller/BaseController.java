@@ -15,8 +15,8 @@ public interface BaseController<T extends DtoEntity, ID> {
     @GetMapping("/getById")
     ResponseEntity<T> getById(@RequestParam("id") ID id);
 
-    @GetMapping("/page/{page}/{records}")
-    ResponseEntity<List<T>> getPage(@PathVariable Integer page, @PathVariable Integer records);
+    @GetMapping("/page/{page}")
+    ResponseEntity<List<T>> getPage(@PathVariable Integer page);
 
     @PostMapping("/save")
     ResponseEntity<T> save(@RequestBody T dtoEntity);

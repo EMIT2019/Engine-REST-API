@@ -6,10 +6,9 @@ import com.emit.vehicle.repository.specification.SearchCriteria;
 import com.emit.vehicle.repository.specification.VehicleSpecification;
 import com.emit.vehicle.repository.specification.parameters.OperationParameter;
 import com.emit.vehicle.repository.specification.parameters.VehicleParameter;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.emit.vehicle.service.parameters.GlobalServiceParameters;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.Vehicle;
@@ -40,8 +39,8 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public List<Vehicle> getPage(Integer pageNumber, Integer pageSize) {
-		Pageable page = PageRequest.of(pageNumber, pageSize);
+	public List<Vehicle> getPage(Integer pageNumber) {
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.HUGE_RECORDS_AMOUNT.getValue());
 		return vRepository.findAll(page).getContent();
 	}
 
@@ -61,57 +60,77 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public List<Vehicle> getAllByGivenBrand(String brandName) {
+	public List<Vehicle> getAllByGivenBrand(Integer pageNumber, String brandName) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_BRAND_FIELD.getValue(),
 				OperationParameter.EQUALS_TO.getValue(),
 				brandName
 		);
 
-		return vRepository.findAll(new VehicleSpecification(criteria));
+		//Paging for vehicle search
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
+
+		return vRepository.findAll(new VehicleSpecification(criteria), page).getContent();
 	}
 
 	@Override
-	public List<Vehicle> getAllByGivenModel(String modelName) {
+	public List<Vehicle> getAllByGivenModel(Integer pageNumber, String modelName) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_MODEL_FIELD.getValue(),
 				OperationParameter.EQUALS_TO.getValue(),
 				modelName
 		);
 
-		return vRepository.findAll(new VehicleSpecification(criteria));
+		//Paging for vehicle search
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.MEDIUM_RECORDS_AMOUNT.getValue());
+
+		return vRepository.findAll(new VehicleSpecification(criteria), page).getContent();
 	}
 
 	@Override
-	public List<Vehicle> getAllByGivenType(String typeName) {
+	public List<Vehicle> getAllByGivenType(Integer pageNumber, String typeName) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_TYPE_FIELD.getValue(),
 				OperationParameter.EQUALS_TO.getValue(),
 				typeName
 		);
 
-		return vRepository.findAll(new VehicleSpecification(criteria));
+		//Paging for vehicle search
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.MEDIUM_RECORDS_AMOUNT.getValue());
+
+		return vRepository.findAll(new VehicleSpecification(criteria), page).getContent();
 	}
 
 	@Override
-	public List<Vehicle> getAllByFasterThan(Long topSpeed) {
+	public List<Vehicle> getAllByFasterThan(Integer pageNumber, Long topSpeed) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_TS_FIELD.getValue(),
 				OperationParameter.GREATER_THAN.getValue(),
 				topSpeed
 		);
 
-		return vRepository.findAll(new VehicleSpecification(criteria));
+		//Paging for vehicle search
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
+
+		return vRepository.findAll(new VehicleSpecification(criteria), page).getContent();
 	}
 
 	@Override
-	public List<Vehicle> getAllByHorsePowerGreaterThan(Long horsepower) {
+	public List<Vehicle> getAllByHorsePowerGreaterThan(Integer pageNumber, Long horsepower) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_HP_FIELD.getValue(),
 				OperationParameter.GREATER_THAN.getValue(),
 				horsepower
 		);
 
-		return vRepository.findAll(new VehicleSpecification(criteria));
+		//Paging for vehicle search
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
+
+		return vRepository.findAll(new VehicleSpecification(criteria), page).getContent();
+	}
+
+	@Override
+	public Pageable pageableBuilder(Integer pageNumber, Integer pageSize) {
+		return PageRequest.of(pageNumber, pageSize);
 	}
 }

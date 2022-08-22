@@ -43,8 +43,8 @@ public class BrandControllerImpl implements BrandController {
 	}
 
 	@Override
-	public ResponseEntity<List<BrandDto>> getPage(Integer page, Integer records) {
-		List<BrandDto> brandDtoList = bService.getPage(page, records).stream()
+	public ResponseEntity<List<BrandDto>> getPage(Integer page) {
+		List<BrandDto> brandDtoList = bService.getPage(page).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
@@ -74,8 +74,8 @@ public class BrandControllerImpl implements BrandController {
 	}
 
 	@Override
-	public ResponseEntity<List<BrandDto>> getAllByGivenName(String name) {
-		List<BrandDto> brandDtoList = bService.getBrandByGivenName(name).stream()
+	public ResponseEntity<List<BrandDto>> getAllByGivenName(Integer page, String name) {
+		List<BrandDto> brandDtoList = bService.getBrandByGivenName(page, name).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(brandDtoList);

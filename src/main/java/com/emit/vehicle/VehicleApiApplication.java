@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 public class VehicleApiApplication {
-	final String baseUrl = "/engine";
-	
 	public static void main(String[] args) {
 		
 		SpringApplication.run(VehicleApiApplication.class, args);

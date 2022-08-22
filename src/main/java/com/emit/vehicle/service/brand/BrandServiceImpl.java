@@ -7,6 +7,7 @@ import com.emit.vehicle.repository.specification.BrandSpecification;
 import com.emit.vehicle.repository.specification.SearchCriteria;
 import com.emit.vehicle.repository.specification.parameters.BrandParameter;
 import com.emit.vehicle.repository.specification.parameters.OperationParameter;
+import com.emit.vehicle.service.parameters.GlobalServiceParameters;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,19 +56,22 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	@Override
-	public List<Brand> getPage(Integer pageNumber, Integer pageSize) {
-		Pageable page = PageRequest.of(pageNumber, pageSize);
+	public List<Brand> getPage(Integer pageNumber) {
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
 		return bRepository.findAll(page).getContent();
 	}
 
 	@Override
-	public List<Brand> getBrandByGivenName(String brandName) {
+	public List<Brand> getBrandByGivenName(Integer pageNumber, String brandName) {
 		SearchCriteria criteria = new SearchCriteria(
 				BrandParameter.BRAND_NAME_FIELD.getValue(),
 				OperationParameter.EQUALS_TO.getValue(),
 				brandName
 		);
 
-		return bRepository.findAll(new BrandSpecification(criteria));
+		//Paging for brand search
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
+
+		return bRepository.findAll(new BrandSpecification(criteria), page).getContent();
 	}
 }

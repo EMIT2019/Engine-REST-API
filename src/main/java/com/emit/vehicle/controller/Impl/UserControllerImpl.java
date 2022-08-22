@@ -44,8 +44,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<UserDto>> getPage(Integer page, Integer records) {
-        List<UserDto> userDtoList = uService.getPage(page, records).stream()
+    public ResponseEntity<List<UserDto>> getPage(Integer page) {
+        List<UserDto> userDtoList = uService.getPage(page).stream()
                 .map(mapper::toGetDtoEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDtoList);

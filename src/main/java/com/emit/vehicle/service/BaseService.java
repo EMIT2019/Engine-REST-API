@@ -10,7 +10,7 @@ public interface BaseService<T extends ModelEntity, ID> {
 
     T getById(ID id);
 
-    List<T> getPage(Integer pageNumber, Integer pageSize);
+    List<T> getPage(Integer pageNumber);
 
     T save(T entity);
 

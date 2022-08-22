@@ -3,7 +3,7 @@ package com.emit.vehicle.service.user;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.emit.vehicle.service.parameters.GlobalServiceParameters;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService  {
     }
 
     @Override
-    public List<User> getPage(Integer pageNumber, Integer pageSize) {
-        Pageable page = PageRequest.of(pageNumber, pageSize);
+    public List<User> getPage(Integer pageNumber) {
+        Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
         return uRepository.findAll(page).getContent();
     }
 

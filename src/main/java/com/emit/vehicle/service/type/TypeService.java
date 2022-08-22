@@ -6,5 +6,5 @@ import com.emit.vehicle.model.Type;
 import com.emit.vehicle.service.BaseService;
 
 public interface TypeService extends BaseService<Type, Long> {
-    List<Type> getTypeByGivenName(String typeName);
+    List<Type> getTypeByGivenName(Integer pageNumber, String typeName);
 }

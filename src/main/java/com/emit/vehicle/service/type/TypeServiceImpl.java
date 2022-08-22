@@ -7,6 +7,7 @@ import com.emit.vehicle.repository.specification.SearchCriteria;
 import com.emit.vehicle.repository.specification.TypeSpecification;
 import com.emit.vehicle.repository.specification.parameters.OperationParameter;
 import com.emit.vehicle.repository.specification.parameters.TypeParameter;
+import com.emit.vehicle.service.parameters.GlobalServiceParameters;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,8 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public List<Type> getPage(Integer pageNumber, Integer pageSize) {
-        Pageable page = PageRequest.of(pageNumber, pageSize);
+    public List<Type> getPage(Integer pageNumber) {
+        Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
         return tRepository.findAll(page).getContent();
     }
 
@@ -61,13 +62,16 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public List<Type> getTypeByGivenName(String typeName) {
+    public List<Type> getTypeByGivenName(Integer pageNumber, String typeName) {
         SearchCriteria criteria = new SearchCriteria(
                 TypeParameter.TYPE_NAME_FIELD.getValue(),
                 OperationParameter.EQUALS_TO.getValue(),
                 typeName
         );
 
-        return tRepository.findAll(new TypeSpecification(criteria));
+        //Paging for type search
+        Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
+
+        return tRepository.findAll(new TypeSpecification(criteria), page).getContent();
     }
 }

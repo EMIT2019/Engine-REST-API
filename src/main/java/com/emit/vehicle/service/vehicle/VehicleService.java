@@ -5,15 +5,18 @@ import java.util.List;
 import com.emit.vehicle.service.BaseService;
 
 import com.emit.vehicle.model.Vehicle;
+import org.springframework.data.domain.Pageable;
 
 public interface VehicleService extends BaseService<Vehicle, Long> {
-    List<Vehicle> getAllByGivenBrand(String brandName);
+    List<Vehicle> getAllByGivenBrand(Integer pageNumber, String brandName);
 
-    List<Vehicle> getAllByGivenModel(String modelName);
+    List<Vehicle> getAllByGivenModel(Integer pageNumber, String modelName);
 
-    List<Vehicle> getAllByGivenType(String typeName);
+    List<Vehicle> getAllByGivenType(Integer pageNumber, String typeName);
 
-    List<Vehicle> getAllByFasterThan(Long topSpeed);
+    List<Vehicle> getAllByFasterThan(Integer pageNumber, Long topSpeed);
 
-    List<Vehicle> getAllByHorsePowerGreaterThan(Long horsepower);
+    List<Vehicle> getAllByHorsePowerGreaterThan(Integer pageNumber, Long horsepower);
+
+    Pageable pageableBuilder(Integer pageNumber, Integer pageSize);
 }

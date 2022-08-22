@@ -10,6 +10,6 @@ import java.util.List;
 
 @RequestMapping("/default")
 public interface BrandController extends BaseController<BrandDto, Long> {
-    @GetMapping("/getByName")
-    ResponseEntity<List<BrandDto>> getAllByGivenName(@RequestParam("name") String name);
+    @GetMapping("/search/getByName")
+    ResponseEntity<List<BrandDto>> getAllByGivenName(@RequestParam("page") Integer page, @RequestParam("name") String name);
 }

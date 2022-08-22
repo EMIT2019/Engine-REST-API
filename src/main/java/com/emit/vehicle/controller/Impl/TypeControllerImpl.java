@@ -44,8 +44,8 @@ public class TypeControllerImpl implements TypeController {
 	}
 
 	@Override
-	public ResponseEntity<List<TypeDto>> getPage(Integer page, Integer records) {
-		List<TypeDto> typeDtoList = tService.getPage(page, records).stream()
+	public ResponseEntity<List<TypeDto>> getPage(Integer page) {
+		List<TypeDto> typeDtoList = tService.getPage(page).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
@@ -75,8 +75,8 @@ public class TypeControllerImpl implements TypeController {
 	}
 
 	@Override
-	public ResponseEntity<List<TypeDto>> getAllByGivenName(String typeName) {
-		List<TypeDto> typeDtoList = tService.getTypeByGivenName(typeName).stream()
+	public ResponseEntity<List<TypeDto>> getAllByGivenName(Integer page, String typeName) {
+		List<TypeDto> typeDtoList = tService.getTypeByGivenName(page, typeName).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(typeDtoList);

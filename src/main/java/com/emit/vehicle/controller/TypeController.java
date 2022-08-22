@@ -10,6 +10,6 @@ import java.util.List;
 
 @RequestMapping("/default")
 public interface TypeController extends BaseController<TypeDto, Long> {
-    @GetMapping("/getByName")
-    ResponseEntity<List<TypeDto>> getAllByGivenName(@RequestParam("name") String typeName);
+    @GetMapping("/search/getByName")
+    ResponseEntity<List<TypeDto>> getAllByGivenName(@RequestParam("page") Integer page, @RequestParam("name") String typeName);
 }

@@ -10,18 +10,18 @@ import java.util.List;
 
 @RequestMapping("/default")
 public interface VehicleController extends BaseController<VehicleDto, Long> {
-    @GetMapping("/getByBrand")
-    ResponseEntity<List<VehicleDto>> getAllByGivenBrand(@RequestParam("brand") String brandName);
+    @GetMapping("/search/getByBrand")
+    ResponseEntity<List<VehicleDto>> getAllByGivenBrand(@RequestParam("page") Integer page, @RequestParam("brand") String brandName);
 
-    @GetMapping("/getByModel")
-    ResponseEntity<List<VehicleDto>> getAllByGivenModel(@RequestParam("model") String modelName);
+    @GetMapping("/search/getByModel")
+    ResponseEntity<List<VehicleDto>> getAllByGivenModel(@RequestParam("page") Integer page, @RequestParam("model") String modelName);
 
-    @GetMapping("/getByType")
-    ResponseEntity<List<VehicleDto>> getAllByGivenType(@RequestParam("type") String typeName);
+    @GetMapping("/search/getByType")
+    ResponseEntity<List<VehicleDto>> getAllByGivenType(@RequestParam("page") Integer page, @RequestParam("type") String typeName);
 
-    @GetMapping("/getFasterThan")
-    ResponseEntity<List<VehicleDto>> getAllByFasterThan(@RequestParam("speed") Long speed);
+    @GetMapping("/search/getFasterThan")
+    ResponseEntity<List<VehicleDto>> getAllByFasterThan(@RequestParam("page") Integer page, @RequestParam("speed") Long speed);
 
-    @GetMapping("/getHPGreaterThan")
-    ResponseEntity<List<VehicleDto>> getAllByHorsePowerGreaterThan(@RequestParam("horsepower") Long horsepower);
+    @GetMapping("/search/getHPGreaterThan")
+    ResponseEntity<List<VehicleDto>> getAllByHorsePowerGreaterThan(@RequestParam("page") Integer page, @RequestParam("horsepower") Long horsepower);
 }

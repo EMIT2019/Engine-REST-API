@@ -43,8 +43,8 @@ public class VehicleControllerImpl implements VehicleController {
 	}
 
 	@Override
-	public ResponseEntity<List<VehicleDto>> getPage(Integer page, Integer records) {
-		List<VehicleDto> vehicleGetDtoList = vService.getPage(page, records).stream()
+	public ResponseEntity<List<VehicleDto>> getPage(Integer page) {
+		List<VehicleDto> vehicleGetDtoList = vService.getPage(page).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(vehicleGetDtoList);
@@ -73,25 +73,16 @@ public class VehicleControllerImpl implements VehicleController {
 	}
 
 	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByGivenBrand(String brandName) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByGivenBrand(brandName).stream()
+	public ResponseEntity<List<VehicleDto>> getAllByGivenBrand(Integer page, String brandName) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenBrand(page, brandName).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(vehicleDtoList);
 	}
 
 	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByGivenModel(String modelName) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByGivenModel(modelName).stream()
-				.map(mapper::toGetDtoEntity)
-				.collect(Collectors.toList());
-
-		return ResponseEntity.ok(vehicleDtoList);
-	}
-
-	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByGivenType(String typeName) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByGivenType(typeName).stream()
+	public ResponseEntity<List<VehicleDto>> getAllByGivenModel(Integer page, String modelName) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenModel(page, modelName).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
@@ -99,8 +90,8 @@ public class VehicleControllerImpl implements VehicleController {
 	}
 
 	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByFasterThan(Long speed) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByFasterThan(speed).stream()
+	public ResponseEntity<List<VehicleDto>> getAllByGivenType(Integer page, String typeName) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenType(page, typeName).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
@@ -108,8 +99,17 @@ public class VehicleControllerImpl implements VehicleController {
 	}
 
 	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByHorsePowerGreaterThan(Long horsepower) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByHorsePowerGreaterThan(horsepower).stream()
+	public ResponseEntity<List<VehicleDto>> getAllByFasterThan(Integer page, Long speed) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByFasterThan(page, speed).stream()
+				.map(mapper::toGetDtoEntity)
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(vehicleDtoList);
+	}
+
+	@Override
+	public ResponseEntity<List<VehicleDto>> getAllByHorsePowerGreaterThan(Integer page, Long horsepower) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByHorsePowerGreaterThan(page, horsepower).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
