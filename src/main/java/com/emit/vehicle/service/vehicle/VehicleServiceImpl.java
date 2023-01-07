@@ -1,14 +1,18 @@
 package com.emit.vehicle.service.vehicle;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.emit.vehicle.repository.specification.SearchCriteria;
 import com.emit.vehicle.repository.specification.VehicleSpecification;
+import com.emit.vehicle.repository.specification.builders.VehicleSpecificationBuilder;
 import com.emit.vehicle.repository.specification.parameters.OperationParameter;
 import com.emit.vehicle.repository.specification.parameters.VehicleParameter;
 import com.emit.vehicle.service.parameters.GlobalServiceParameters;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.emit.vehicle.model.Vehicle;
@@ -60,11 +64,11 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public List<Vehicle> getAllByGivenBrand(Integer pageNumber, String brandName) {
+	public List<Vehicle> getAllByGivenBrand(Integer pageNumber, String brandKey) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_BRAND_FIELD.getValue(),
-				OperationParameter.EQUALS_TO.getValue(),
-				brandName
+				OperationParameter.EQUALS_TO,
+				brandKey
 		);
 
 		//Paging for vehicle search
@@ -77,7 +81,7 @@ public class VehicleServiceImpl implements VehicleService {
 	public List<Vehicle> getAllByGivenModel(Integer pageNumber, String modelName) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_MODEL_FIELD.getValue(),
-				OperationParameter.EQUALS_TO.getValue(),
+				OperationParameter.EQUALS_TO,
 				modelName
 		);
 
@@ -88,11 +92,11 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public List<Vehicle> getAllByGivenType(Integer pageNumber, String typeName) {
+	public List<Vehicle> getAllByGivenType(Integer pageNumber, String typeKey) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_TYPE_FIELD.getValue(),
-				OperationParameter.EQUALS_TO.getValue(),
-				typeName
+				OperationParameter.EQUALS_TO,
+				typeKey
 		);
 
 		//Paging for vehicle search
@@ -105,7 +109,7 @@ public class VehicleServiceImpl implements VehicleService {
 	public List<Vehicle> getAllByFasterThan(Integer pageNumber, Long topSpeed) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_TS_FIELD.getValue(),
-				OperationParameter.GREATER_THAN.getValue(),
+				OperationParameter.GREATER_THAN,
 				topSpeed
 		);
 
@@ -119,7 +123,7 @@ public class VehicleServiceImpl implements VehicleService {
 	public List<Vehicle> getAllByHorsePowerGreaterThan(Integer pageNumber, Long horsepower) {
 		SearchCriteria criteria = new SearchCriteria(
 				VehicleParameter.VEHICLE_HP_FIELD.getValue(),
-				OperationParameter.GREATER_THAN.getValue(),
+				OperationParameter.GREATER_THAN,
 				horsepower
 		);
 
@@ -127,6 +131,24 @@ public class VehicleServiceImpl implements VehicleService {
 		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
 
 		return vRepository.findAll(new VehicleSpecification(criteria), page).getContent();
+	}
+
+	@Override
+	public List<Vehicle> globalVehicleSearch(Integer pageNumber, String searchParams) {
+		VehicleSpecificationBuilder builder = new VehicleSpecificationBuilder();
+		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+		Matcher matcher = pattern.matcher(searchParams + ",");
+
+		while(matcher.find()){
+			System.out.println(matcher.group(1) +" "+ matcher.group(2) +" "+ matcher.group(3));
+			builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+		}
+
+		//Paging for vehicle search
+		Pageable page = PageRequest.of(pageNumber, GlobalServiceParameters.SMALL_RECORDS_AMOUNT.getValue());
+
+		Specification<Vehicle> spec = builder.build();
+		return vRepository.findAll(spec, page).getContent();
 	}
 
 	@Override

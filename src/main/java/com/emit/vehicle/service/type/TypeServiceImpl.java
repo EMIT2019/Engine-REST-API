@@ -65,7 +65,7 @@ public class TypeServiceImpl implements TypeService {
     public List<Type> getTypeByGivenName(Integer pageNumber, String typeName) {
         SearchCriteria criteria = new SearchCriteria(
                 TypeParameter.TYPE_NAME_FIELD.getValue(),
-                OperationParameter.EQUALS_TO.getValue(),
+                OperationParameter.EQUALS_TO,
                 typeName
         );
 

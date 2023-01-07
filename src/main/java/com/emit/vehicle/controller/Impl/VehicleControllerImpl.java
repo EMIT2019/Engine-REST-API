@@ -72,9 +72,10 @@ public class VehicleControllerImpl implements VehicleController {
 		vService.delete(id);
 	}
 
+	//The brandKey parameter can have a descriptive or primary key value (it can work in both ways thanks to some Specification pattern implementation)
 	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByGivenBrand(Integer page, String brandName) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByGivenBrand(page, brandName).stream()
+	public ResponseEntity<List<VehicleDto>> getAllByGivenBrand(Integer page, String brandKey) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenBrand(page, brandKey).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(vehicleDtoList);
@@ -89,9 +90,10 @@ public class VehicleControllerImpl implements VehicleController {
 		return ResponseEntity.ok(vehicleDtoList);
 	}
 
+	//The typeKey parameter can have a descriptive or primary key value (it can work in both ways thanks to some Specification pattern implementation)
 	@Override
-	public ResponseEntity<List<VehicleDto>> getAllByGivenType(Integer page, String typeName) {
-		List<VehicleDto> vehicleDtoList = vService.getAllByGivenType(page, typeName).stream()
+	public ResponseEntity<List<VehicleDto>> getAllByGivenType(Integer page, String typeKey) {
+		List<VehicleDto> vehicleDtoList = vService.getAllByGivenType(page, typeKey).stream()
 				.map(mapper::toGetDtoEntity)
 				.collect(Collectors.toList());
 
@@ -115,6 +117,13 @@ public class VehicleControllerImpl implements VehicleController {
 
 		return ResponseEntity.ok(vehicleDtoList);
 	}
+	//This method allows the client to make a search with one or more parameters (it can work in that way thanks to combining Specifications)
+	@Override
+	public ResponseEntity<List<VehicleDto>> globalVehicleSearch(Integer page, String parameters) {
+		List<VehicleDto> vehicleDtoList = vService.globalVehicleSearch(page, parameters).stream()
+				.map(mapper::toGetDtoEntity)
+				.collect(Collectors.toList());
 
-
+		return ResponseEntity.ok(vehicleDtoList);
+	}
 }

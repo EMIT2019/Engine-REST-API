@@ -24,4 +24,7 @@ public interface VehicleController extends BaseController<VehicleDto, Long> {
 
     @GetMapping("/search/getHPGreaterThan")
     ResponseEntity<List<VehicleDto>> getAllByHorsePowerGreaterThan(@RequestParam("page") Integer page, @RequestParam("horsepower") Long horsepower);
+
+    @GetMapping("/search/globalVehicleSearch")
+    ResponseEntity<List<VehicleDto>> globalVehicleSearch(@RequestParam("page") Integer page, @RequestParam("parameters") String parameters);
 }

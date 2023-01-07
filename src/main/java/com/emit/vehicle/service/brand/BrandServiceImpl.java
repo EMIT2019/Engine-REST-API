@@ -65,7 +65,7 @@ public class BrandServiceImpl implements BrandService {
 	public List<Brand> getBrandByGivenName(Integer pageNumber, String brandName) {
 		SearchCriteria criteria = new SearchCriteria(
 				BrandParameter.BRAND_NAME_FIELD.getValue(),
-				OperationParameter.EQUALS_TO.getValue(),
+				OperationParameter.EQUALS_TO,
 				brandName
 		);
 

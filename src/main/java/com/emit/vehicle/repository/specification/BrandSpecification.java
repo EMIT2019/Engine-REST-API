@@ -29,15 +29,15 @@ public class BrandSpecification implements Specification<Brand> {
 
     @Override
     public Predicate toPredicate(Root<Brand> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        if(criteria.getOperation().equalsIgnoreCase(OperationParameter.GREATER_THAN.getValue())){
+        if(criteria.getOperation() == OperationParameter.GREATER_THAN){
             return criteriaBuilder.greaterThanOrEqualTo(
                     root.<String> get(criteria.getKey()), criteria.getValue().toString()
             );
-        } else if(criteria.getOperation().equalsIgnoreCase(OperationParameter.LOWER_THAN.getValue())   ){
+        } else if(criteria.getOperation() == OperationParameter.LOWER_THAN){
             return criteriaBuilder.lessThanOrEqualTo(
                     root.<String> get(criteria.getKey()), criteria.getValue().toString()
             );
-        } else if(criteria.getOperation().equalsIgnoreCase(OperationParameter.EQUALS_TO.getValue())){
+        } else if(criteria.getOperation() == OperationParameter.EQUALS_TO){
             if(root.get(criteria.getKey()).getJavaType() == String.class){
                 return criteriaBuilder.like(
                         root.<String> get(criteria.getKey()), "%" + criteria.getValue() + "%"
