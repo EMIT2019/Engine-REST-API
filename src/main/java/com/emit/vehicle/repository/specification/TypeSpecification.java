@@ -2,6 +2,7 @@ package com.emit.vehicle.repository.specification;
 
 import com.emit.vehicle.model.Type;
 import com.emit.vehicle.repository.specification.parameters.OperationParameter;
+import jdk.dynalink.Operation;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -29,20 +30,13 @@ public class TypeSpecification implements Specification<Type> {
 
     @Override
     public Predicate toPredicate(Root<Type> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        if(criteria.getOperation() == OperationParameter.GREATER_THAN){
-            return criteriaBuilder.greaterThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString()
-            );
-        } else if(criteria.getOperation() == OperationParameter.LOWER_THAN){
-            return criteriaBuilder.greaterThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString()
-            );
-        } else if(criteria.getOperation() == OperationParameter.EQUALS_TO){
+
+        if(criteria.getOperation() == OperationParameter.EQUALS_TO){
             if(root.get(criteria.getKey()).getJavaType() == String.class){
                 return criteriaBuilder.like(
                         root.<String> get(criteria.getKey()), "%" + criteria.getValue().toString() + "%"
                 );
-            } else {
+            }else {
                 return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
             }
         }

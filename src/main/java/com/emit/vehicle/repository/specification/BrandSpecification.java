@@ -29,23 +29,17 @@ public class BrandSpecification implements Specification<Brand> {
 
     @Override
     public Predicate toPredicate(Root<Brand> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        if(criteria.getOperation() == OperationParameter.GREATER_THAN){
-            return criteriaBuilder.greaterThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString()
-            );
-        } else if(criteria.getOperation() == OperationParameter.LOWER_THAN){
-            return criteriaBuilder.lessThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString()
-            );
-        } else if(criteria.getOperation() == OperationParameter.EQUALS_TO){
+        //Here it makes a search based on a brand descriptive data or id provided
+        if(criteria.getOperation() == OperationParameter.EQUALS_TO){
             if(root.get(criteria.getKey()).getJavaType() == String.class){
                 return criteriaBuilder.like(
                         root.<String> get(criteria.getKey()), "%" + criteria.getValue() + "%"
                 );
-            } else {
+            }else {
                 return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
             }
         }
         return null;
     }
 }
+

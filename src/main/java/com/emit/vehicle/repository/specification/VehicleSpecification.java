@@ -33,55 +33,69 @@ public class VehicleSpecification implements Specification<Vehicle> {
 
     @Override
     public Predicate toPredicate(Root<Vehicle> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        //Search a vehicle when an speed information is provided from the client
-        if(criteria.getOperation() == OperationParameter.GREATER_THAN){
-            return criteriaBuilder.greaterThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString()
-            );
-            
-        } else if(criteria.getOperation() == OperationParameter.LOWER_THAN){
-            return criteriaBuilder.lessThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString()
-            );
-        } else if(criteria.getOperation() == OperationParameter.EQUALS_TO) {
-            if(root.get(criteria.getKey()).getJavaType() == Brand.class){
-                Join<Brand, Vehicle> brandVehiclesJoin = root.join(criteria.getKey());
 
-                if(isNumeric((String) criteria.getValue())){
-                    return criteriaBuilder.equal(
-                            brandVehiclesJoin.get(BrandParameter.BRAND_ID_FIELD.getValue()), criteria.getValue()
+        try{
+            switch (criteria.getOperation()){
+                //Search a vehicle when a speed information is provided from the client
+                case GREATER_THAN:
+                    return criteriaBuilder.greaterThanOrEqualTo(
+                            root.<String> get(criteria.getKey()), criteria.getValue().toString()
                     );
-                } else {
-                    return criteriaBuilder.like(
-                            brandVehiclesJoin.get(BrandParameter.BRAND_NAME_FIELD.getValue()), "%" + criteria.getValue() + "%"
+                //Search a vehicle when a speed information is provided from the client
+                case LOWER_THAN:
+                    return criteriaBuilder.lessThanOrEqualTo(
+                            root.<String> get(criteria.getKey()), criteria.getValue().toString()
                     );
-                }
+                //Search a vehicle when any kind of information is provided from the client
+                case EQUALS_TO:
+                    if(root.get(criteria.getKey()).getJavaType() == Brand.class){
+                        //Making a join from vehicle table to brand table for making a search based on a brand data provided for the client
+                        Join<Brand, Vehicle> brandVehiclesJoin = root.join(criteria.getKey());
 
-            } else if(root.get(criteria.getKey()).getJavaType() == Type.class){
-                Join<Type, Vehicle> typeVehicleJoin = root.join(criteria.getKey());
+                        //Based on the information provided, here it makes a search based on the selected primary key value or a typed data for the client
+                        if(isNumeric((String) criteria.getValue())){
+                            return criteriaBuilder.equal(
+                                    brandVehiclesJoin.get(BrandParameter.BRAND_ID_FIELD.getValue()), criteria.getValue()
+                            );
+                        } else {
+                            return criteriaBuilder.like(
+                                    brandVehiclesJoin.get(BrandParameter.BRAND_NAME_FIELD.getValue()), "%" + criteria.getValue() + "%"
+                            );
+                        }
 
-                if(isNumeric((String) criteria.getValue())){
-                    return criteriaBuilder.equal(
-                            typeVehicleJoin.get(TypeParameter.TYPE_ID_FIELD.getValue()), criteria.getValue()
-                    );
-                } else {
-                    return criteriaBuilder.like(
-                            typeVehicleJoin.get(TypeParameter.TYPE_NAME_FIELD.getValue()), "%" + criteria.getValue() + "%"
-                    );
-                }
+                    } else if(root.get(criteria.getKey()).getJavaType() == Type.class){
+                        //Making a join from vehicle table to type table for making a search based on a brand data provided for the client
+                        Join<Type, Vehicle> typeVehicleJoin = root.join(criteria.getKey());
 
-            } else if(root.get(criteria.getKey()).getJavaType() == String.class){
-                return criteriaBuilder.like(
-                        root.<String> get(criteria.getKey()), "%" + criteria.getValue() + "%"
-                );
-            } else {
-                return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
+                        //Based on the information provided, here it makes a search based on the selected primary key value or a typed data for the client
+                        if(isNumeric((String) criteria.getValue())){
+                            return criteriaBuilder.equal(
+                                    typeVehicleJoin.get(TypeParameter.TYPE_ID_FIELD.getValue()), criteria.getValue()
+                            );
+                        } else {
+                            return criteriaBuilder.like(
+                                    typeVehicleJoin.get(TypeParameter.TYPE_NAME_FIELD.getValue()), "%" + criteria.getValue() + "%"
+                            );
+                        }
+
+                    } else if(root.get(criteria.getKey()).getJavaType() == String.class){
+                        return criteriaBuilder.like(
+                                root.<String> get(criteria.getKey()), "%" + criteria.getValue() + "%"
+                        );
+                    } else {
+                        return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
+                    }
+                default:
+                    System.out.println("Something went wrong!");
             }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
         return null;
     }
 
     //Method to check if a criteria object is an instance of Integer or String
+    // (This method allows the client to make a search by typing a descriptive parameter or simply using a preload catalog)
     public static boolean isNumeric(String value) {
         if(value == null){
             return false;
@@ -89,7 +103,6 @@ public class VehicleSpecification implements Specification<Vehicle> {
 
         try {
             int number = Integer.parseInt(value);
-
         }catch(NumberFormatException e){
             return false;
         }
